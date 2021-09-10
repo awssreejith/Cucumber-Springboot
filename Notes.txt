@@ -1,0 +1,136 @@
+This Demo shows how to run integration test using Cucumber, JUnit 
+=================================================================
+
+Stage-1 - Create a set of REST API endpoints
+============================================
+Create a PUT,GET,POST and DELETE endpoint inorder to
+
+Add, get, update and delete a Student resource
+
+Stage-2 - Adding Integration support.
+
+0) Add below dependencies in pom.xml
+
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java8</artifactId>
+			<version>6.11.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-spring</artifactId>
+			<version>6.11.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-junit</artifactId>
+			<version>6.11.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>6.11.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.7.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.7.0</version>
+			<scope>test</scope>
+		</dependency>
+		
+
+And the below plugin
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.19.1</version>
+				</plugin>
+		
+1) Create a folder called "resources" under src\test and create a folder called "features" under resources folder
+
+2) Under src\test\java folder create a package called com.sreejith.cucumberdemo.IntegrationTest
+
+3) Add a new class under the above package as below
+
+@RunWith(Cucumber.class)
+@CucumberOptions(features = "src/test/resources")
+public class CucumberIntegrationTest {
+}
+
+4) Install a plugin called "Cucumber for java" for IntelliJ
+[This will automatically install Gherkin plugin as well]
+
+5) Create a file [MyTest.feature] under resources\features and write a feature scenario as below
+
+Feature: The user can leverage by adding a new Student
+  Scenario: The user can add new Student through /api/student GET endpoint
+    Given The system up and running
+    When The user calls the /api/student with GET verb and Student details
+    Then The new student is added and new student ID is returned
+
+	
+	
+	
+6) Since we had added the Gherkin plugin at step#  4, we can right click and create step def code.
+Note: For the first time it will default to a StepDef.java File. Simply set the patch of this file to com.sreejith.cucumberdemo.IntegrationTest
+
+7) Update the generated file as below [Add the below annotations on top of class which was auto created ]
+
+@CucumberContextConfiguration
+@SpringBootTest
+public class MyStepdefsTest {
+
+    @Given("The system up and running")
+    public void theSystemUpAndRunning() {
+        
+    }
+
+    @When("The user calls the \\/api\\/student with GET verb and Student details")
+    public void theUserCallsTheApiStudentWithGETVerbAndStudentDetails() {
+        
+    }
+
+    @Then("The new student is added and new student ID is returned")
+    public void theNewStudentIsAddedAndNewStudentIDIsReturned() {
+        Assertions.assertEquals(1,1);
+    }
+}
+
+8) Once Done go to command prompt and issue
+   mvn clean install
+   
+   This will build the jar and run integration test as well
+   
+   
+***************************************************************************************** 
+   
+I had added two scenarios.Check how to write actual test in the MyStepdefsTest.java file.
+This include how to use MockMvc to connect to service from Cuucmber test also
+
+
+
+
+	
+	
+
+
+
+		
